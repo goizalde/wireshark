@@ -11,7 +11,6 @@ El tráfico capturado corresponde a una sesión de navegación que incluye la ej
 1.  **Configurar Wireshark** para que el tráfico HTTPS sea legible.
 2.  **Identificar el Vector de Ataque:** Determinar si hubo un intento de descarga de malware o exfiltración de datos.
 3.  **Localizar la Carga Útil Maliciosa:** Encontrar el paquete que solicita la descarga de un componente malicioso (un archivo `.exe`, `.bat` o `.dll`).
-4.  **Encontrar Credenciales:** Localizar cualquier credencial de usuario (nombre de usuario y contraseña) que haya sido enviada durante la sesión.
 
 ---
 
@@ -43,7 +42,6 @@ Sigue estos pasos:
 9.  Abra el archivo \texttt{decrypting\_HTTPS\_TLS\_traffic.pcap}. Wireshark ahora debería mostrar el tráfico \texttt{TLS} descifrado como \texttt{HTTP}.
 
 
-
 ---
 
 ## Filtros de Visualización para Actividad Sospechosa
@@ -55,15 +53,4 @@ El ataque podría implicar la descarga de un componente de malware. Los archivos
 
 Crea un filtro que muestre todas las peticiones \textbf{HTTP} donde el \textbf{URI de la solicitud} contenga extensiones de archivos ejecutables de Windows (`.exe`), bibliotecas dinámicas (`.dll`) o scripts de comandos (`.bat`).
 
-### 2. Búsqueda de Exfiltración y Datos de Formulario
-
-Las solicitudes POST se utilizan para enviar datos al servidor. Una longitud de contenido inusualmente grande en un POST a menudo indica una transferencia de archivos o una exfiltración masiva de datos (como credenciales o documentos robados). 
-
-Crea un filtro que aísle solo las peticiones \textbf{POST} que además tengan un campo de longitud de contenido inusualmente grande (por ejemplo, mayor a 1500 bytes), lo que podría indicar la exfiltración de datos. Examina estas peticiones. 
-Descarta el tráfico de telemetría a URIs como /OneCollector/1.0/.
- 
-### 3. Búsqueda de Comandos Incrustados
-Aunque la carga útil suele ir en un POST, en ocasiones, los comandos de ataque pueden viajar dentro de la URL de una solicitud \texttt{GET}.
-
-Crea un filtro para mostrar peticiones \textbf{GET} cuya \textbf{longitud} sea sospechosamente larga (por ejemplo, más de 100 caracteres), lo que sugiere la inyección de comandos o parámetros excesivos.
 
